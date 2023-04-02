@@ -1,4 +1,9 @@
 html {
 font-size: 16px;
-font-family: 'Comic Sans MS'
+font-family: Comic Sans MS;
+}
+
+p1{
+font-size: 1.5em;
+font-family: sans-serif;
 }
