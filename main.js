@@ -87,7 +87,26 @@ function displayMap() {
     var className = "magma";
     grid.className = className;
 
+    for (var x=0; x<= game.global.mapWidth-1; x++){
+        var row=document.createElement("row");
+        grid.insertBefore(row, grid.childNodes[0]);
+        for (var y=0; y<= game.global.mapHeight-1;y++){
+            var cell;
+            if (gamemap[y][x]=='wall'){
+                cell=document.createElement("wall");
+            }
+            else if (gamemap[y][x]=='path'){
+                cell=document.createElement("path");
+            }
+            row.append(cell);
+            cell.style.width=(100/game.global.mapWidth)+"%";
+
+        }
+    }
 
 
 }
-console.log(gamemap);
+
+console.log(gamemap[0][0]);
+displayMap();
+console.log('Done')
