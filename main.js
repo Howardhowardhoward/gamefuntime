@@ -80,4 +80,14 @@ function makePath(map) {
     }
 }
 makePath(gamemap);
+
+function displayMap() {
+    var grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    var className = "magma";
+    grid.className = className;
+
+
+
+}
 console.log(gamemap);
