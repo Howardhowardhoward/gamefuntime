@@ -70,7 +70,7 @@ function makePath(map) {
 
         else if (dir == 4) {
             dir = Math.floor(Math.random() * 4) + 1;
-            if (col != game.global.mapWidth - 1 && (row==0||(row > 1 && map[row - 1][col + 1] != 'path')) && (row==game.global.mapHeight-1||(row < game.global.mapHeight - 1 && map[row + 1][col + 1] != 'path'))&&map[row][col+1]!='path') {
+            if (col != game.global.mapWidth - 1 && (row==0||(row > 0 && map[row - 1][col + 1] != 'path')) && (row==game.global.mapHeight-1||(row < game.global.mapHeight - 1 && map[row + 1][col + 1] != 'path'))&&map[row][col+1]!='path ') {
                 col++;
                 map[row][col] = 'path';
             }
@@ -79,7 +79,7 @@ function makePath(map) {
         console.log(map);
     }
 }
-makePath(gamemap);
+
 
 function displayMap() {
     var grid = document.getElementById("grid");
@@ -113,6 +113,44 @@ function displayMap() {
 
 }
 
-console.log(gamemap[0][0]);
-displayMap();
+function save() {
+    try {
+        localStorage.setItem("save", JSON.stringify(game));
+    }
+    catch (e) {
+        message("sorry, it no work");
+    }
+}
+
+function load() {
+    try {
+        var savegame = JSON.parse(localStorage.getItem("save"));
+        if(typeof savegame.global !== 'undefined') {
+            for (var item in game.global) {
+                if (typeof savegame.global[item] !== 'undefined') game.global[item] = savegame.global[item];
+            }
+        }
+        game = savegame;
+
+    }
+    catch (e) {
+        
+    }
+    
+
+    
+}
+
+load();
+if (game.global.deadMap) {
+    makePath(gamemap);
+    game.global.map = gamemap;
+    game.global.deadMap = false;
+    save();
+}
+
+
+
+displayMap(game.global.map);
 console.log('Done')
+  
