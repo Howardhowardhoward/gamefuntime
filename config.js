@@ -8,8 +8,8 @@ function newGame() {
             mapHeight: 7,
 
             // Game variables
-            map=matrix(),
-            deadmap=true;
+            map:matrix(),   
+            deadmap:true
 
 
             

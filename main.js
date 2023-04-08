@@ -113,9 +113,13 @@ function displayMap() {
 
 }
 
+function deleteSave() {
+    localStorage.removeItem("gameFuntimeSave")
+}
+
 function save() {
     try {
-        localStorage.setItem("save", JSON.stringify(game));
+        localStorage.setItem("gameFuntimeSave", JSON.stringify(game));
     }
     catch (e) {
         message("sorry, it no work");
@@ -124,25 +128,29 @@ function save() {
 
 function load() {
     try {
-        var savegame = JSON.parse(localStorage.getItem("save"));
-        if(typeof savegame.global !== 'undefined') {
+        var savegame = JSON.parse(localStorage.getItem("gameFuntimeSave"));
+        console.log(savegame);
+        if(savegame!=null && typeof savegame.global !== 'undefined') {
             for (var item in game.global) {
                 if (typeof savegame.global[item] !== 'undefined') game.global[item] = savegame.global[item];
             }
         }
-        game = savegame;
+
+        console.log(game)
 
     }
     catch (e) {
+        console.log(e);
         
     }
     
 
     
 }
-
 load();
+console.log(game);
 if (game.global.deadMap) {
+    debugger
     makePath(gamemap);
     game.global.map = gamemap;
     game.global.deadMap = false;
