@@ -46,7 +46,7 @@ function makePath(map) {
             }
         }
         else if (dir == 2) {
-            if (row != game.global.mapHeight - 1&&(row<game.global.mapHeight-1 && map[row+1][col]!='path') && (row == game.global.mapHeight - 2 || (row < game.global.mapHeight - 2 && map[row + 2][col] != 'path')) && (col==0||(col > 1 && map[row + 1][col - 1] != 'path')) && (col < game.global.mapWidth - 1 && map[row + 1][col + 1] != 'path')) {
+            if (row != game.global.mapHeight - 1&&(row<game.global.mapHeight-1 && map[row+1][col]!='path') && (row == game.global.mapHeight - 2 || (row < game.global.mapHeight - 2 && map[row + 2][col] != 'path')) && (col==0||(col > 0 && map[row + 1][col - 1] != 'path')) && (col < game.global.mapWidth - 1 && map[row + 1][col + 1] != 'path')) {
                 row++;
                 map[row][col] = 'path';
                 dir = Math.floor(Math.random() * 4) + 1;
@@ -70,7 +70,7 @@ function makePath(map) {
 
         else if (dir == 4) {
             dir = Math.floor(Math.random() * 4) + 1;
-            if (col != game.global.mapWidth - 1 && (row==0||(row > 1 && map[row - 1][col + 1] != 'path')) && (row==game.global.mapHeight-1||(row < game.global.mapHeight - 1 && map[row + 1][col + 1] != 'path'))) {
+            if (col != game.global.mapWidth - 1 && (row==0||(row > 1 && map[row - 1][col + 1] != 'path')) && (row==game.global.mapHeight-1||(row < game.global.mapHeight - 1 && map[row + 1][col + 1] != 'path'))&&map[row][col+1]!='path') {
                 col++;
                 map[row][col] = 'path';
             }
@@ -86,20 +86,26 @@ function displayMap() {
     grid.innerHTML = "";
     var className = "magma";
     grid.className = className;
-
-    for (var x=0; x<= game.global.mapWidth-1; x++){
-        var row=document.createElement("row");
+  
+    for (var x=0; x<= game.global.mapHeight-1; x++){
+        var row = document.createElement("row");
         grid.insertBefore(row, grid.childNodes[0]);
-        for (var y=0; y<= game.global.mapHeight-1;y++){
-            var cell;
-            if (gamemap[y][x]=='wall'){
-                cell=document.createElement("wall");
+        row.setAttribute("id", "row" + x);
+        row.className = "row";
+        row.style.height=(100/game.global.mapHeight)+"%";
+        for (var y=0; y<= game.global.mapWidth-1;y++){
+            var cell = document.createElement("block");
+            cell.setAttribute("id", x+', '+y)
+            if (gamemap[x][y]=='wall'){
+               
+                cell.className="wall";
             }
-            else if (gamemap[y][x]=='path'){
-                cell=document.createElement("path");
+            else if (gamemap[x][y]=='path'){
+               
+                cell.className="path";
             }
-            row.append(cell);
-            cell.style.width=(100/game.global.mapWidth)+"%";
+            row.appendChild(cell);
+            cell.style.width = (100 / game.global.mapWidth) + "%";
 
         }
     }
