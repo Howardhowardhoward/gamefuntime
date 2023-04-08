@@ -8,8 +8,9 @@ function newGame() {
             mapHeight: 7,
 
             // Game variables
-            map:matrix(),   
-            deadmap:true
+            map:[], 
+            deadMap: true,
+            playerPosition: -1,
 
 
             

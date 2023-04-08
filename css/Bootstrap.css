@@ -33,6 +33,33 @@ height: 100%;
 padding:0;
 }
 
+.player {
+    background-color: #0026ff;
+    background-position: center;
+    /* color: #ffffff;*/
+    display: inline-block;
+    height: 100%;
+    padding: 0;
+}
+
+.goal {
+    background-color: #00ff21;
+    background-position: center;
+    /* color: #ffffff;*/
+    display: inline-block;
+    height: 100%;
+    padding: 0;
+}
+
+.shadow {
+    background-color: #b200ff;
+    background-position: center;
+    /* color: #ffffff;*/
+    display: inline-block;
+    height: 100%;
+    padding: 0;
+}
+
 .block {
     position: relative;
     width: 100%;
