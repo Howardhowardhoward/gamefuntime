@@ -1,36 +1,39 @@
-html {font-size: 16px;font-family: Comic Sans MS;overflow: auto;}
-
-p1{
-font-size: 1.5em;
-font-family: sans-serif;
+html {
+    font-size: 16px;
+    font-family: Comic Sans MS;
+    overflow: auto;
 }
 
-.col-mid{
+p1 {
+    font-size: 1.5em;
+    font-family: sans-serif;
+}
+
+.col-mid {
     /*padding-right: 15px;*/
 
     position: relative;
-    width:33%;
-    left:40%;
+    width: 33%;
+    left: 40%;
 }
 
-.wall{
+.wall {
+    background-color: #ff0000;
+    background-position: center;
+    /*color: #ffffff;*/
 
-background-color: #ff0000;
-background-position: center;
-/*color: #ffffff;*/
-
-display: inline-block;
-height:  100%;
-padding: 0;
+    display: inline-block;
+    height: 100%;
+    padding: 0;
 }
 
-.path{
-background-color: #ffd800;
-background-position: center;
-/* color: #ffffff;*/
-display: inline-block;
-height: 100%;
-padding:0;
+.path {
+    background-color: #ffd800;
+    background-position: center;
+    /* color: #ffffff;*/
+    display: inline-block;
+    height: 100%;
+    padding: 0;
 }
 
 .player {
@@ -42,8 +45,25 @@ padding:0;
     padding: 0;
 }
 
+.playerLoaded {
+    background-color: #00b9ff;
+    background-position: center;
+    /* color: #ffffff;*/
+    display: inline-block;
+    height: 100%;
+    padding: 0;
+}
+
 .goal {
     background-color: #00ff21;
+    background-position: center;
+    /* color: #ffffff;*/
+    display: inline-block;
+    height: 100%;
+}
+
+.return {
+    background-color: #0026ff;
     background-position: center;
     /* color: #ffffff;*/
     display: inline-block;
@@ -67,26 +87,69 @@ padding:0;
     text-align: center;
     font-size: 1.5em;
     font-family: sans-serif;
-    margin:0;
-
+    margin: 0;
 }
 
-.magma{
-  /*  background-color: #ff6a0050;*/
-        background-position: center;
-        color: #ffffff;
-        width: 100%;
-        height: 300px;
-
+.magma {
+    /*  background-color: #ff6a0050;*/
+    background-position: center;
+    color: #ffffff;
+    width: 100%;
+    height: 300px;
 }
 
-.row{
-position: relative;
+.row {
+    position: relative;
     text-align: center;
     font-size: 1.5em;
     font-family: sans-serif;
     display: table;
     margin: 0;
-    overflow:auto;
+    overflow: auto;
     width: 100%
 }
+
+.finances{
+    position: relative;
+    text-align: center;
+    font-size: 1.5em;
+    font-family: 'Comic Sans MS';
+    display: inline-block;
+    margin: 0;
+    overflow: auto;
+    width: 50%
+}
+
+.left{
+position: relative;
+    text-align: center;
+    font-size: 1.5em;
+    font-family: 'Comic Sans MS';
+    display: inline-block;
+    margin: 0;
+    overflow: auto;
+    width: 49%;
+
+}
+
+.right{
+position: relative;
+    text-align: center;
+    font-size: 1.5em;
+    font-family: 'Comic Sans MS';
+    display: inline-block;
+    margin: 0;
+    overflow: auto;
+    width: 49%;
+}
+
+.little{
+        position: relative;
+        text-align: center;
+        font-size: 0.75em;
+        font-family: 'Comic Sans MS';
+        display: table;
+        margin: 0;
+        overflow: auto;
+        width: 100%;
+        }

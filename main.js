@@ -13,9 +13,9 @@ gamemap = matrix();
 
 function makePath(map) {
     /* debugger*/
-    var row = Math.floor(game.global.mapHeight / 2);
-    var col = 0;
-    map[row][col] = 'path';
+    var row = game.global.startX;
+    var col = game.global.startY;
+    map[row][col] = 'path'; 
     game.global.playerPosition = [row, col];
     console.log(game.global.playerPosition)
     var dir = Math.floor(Math.random() * 4) + 1;
@@ -97,15 +97,18 @@ function displayMap(gamemap) {
                 cell.className = "goal";
             }
             else if (gamemap[x][y] == 'player') {
-                cell.className = "player";
+                cell.className = (game.global.gotArtifact) ? "playerLoaded" : "player";
             }
             else if (gamemap[x][y] == "shadow") {
-                cell.className ="shadow";
+                cell.className = "shadow";
             }
 
             row.appendChild(cell);
             cell.style.width = (100 / game.global.mapWidth) + "%";
 
+            if (game.global.gotArtifact && x == game.global.startX && y == game.global.startY) {
+                cell.className = "return"
+            }
         }
     }
 
@@ -146,26 +149,10 @@ function load() {
 
 
 }
-load();
-console.log(game);
-if (game.global.deadMap) {
-    makePath(gamemap);
-    game.global.map = gamemap;
-    game.global.deadMap = false;
-    save();
-}
 
 
 
-displayMap(game.global.map);
-console.log('Done')
 
-
-window.setInterval(function () {
-
-    save();
-
-}, 1000);
 
 document.addEventListener('keydown', function (event) {
     playerRow = game.global.playerPosition[0];
@@ -202,10 +189,25 @@ document.addEventListener('keydown', function (event) {
             game.global.playerPosition[0] = playerRow + 1;
         shadow = true;
     }
+    if (game.global.map[game.global.playerPosition[0]][game.global.playerPosition[1]] == 'goal') {
+        game.global.gotArtifact = true;
+
+    }
+
     if (shadow) {
         game.global.map[playerRow][playerCol] = 'shadow';
     }
+    if (game.global.gotArtifact && game.global.playerPosition[0] == game.global.startX && game.global.playerPosition[1] == game.global.startY) {
+        game.global.artifacts++;
+        game.global.gotArtifact = false;
+        game.global.map = matrix();
+        makePath(game.global.map);
+        updateMap();
+        showMoney();
+    }
+
     updateMap();
+
 });
 
 function updateMap() {
@@ -213,4 +215,32 @@ function updateMap() {
     displayMap(game.global.map);
 }
 
+function updateMoney() {
+    document.getElementById("artifacts").innerHTML =game.global.artifacts;
+    game.global.money *= game.global.interestRate;
+    document.getElementById("money").innerHTML = game.global.money;
+}
+function showMoney() {
+    document.getElementById("money").innerHTML = game.global.money;
+    document.getElementById("artifacts").innerHTML = game.global.artifacts;
+}
 
+load();
+console.log(game);
+if (game.global.deadMap) {
+    makePath(gamemap);
+    game.global.map = gamemap;
+    game.global.deadMap = false;
+    save();
+}
+
+displayMap(game.global.map);
+console.log('Done')
+showMoney();
+
+window.setInterval(function () {
+
+    save();
+    updateMoney();
+
+}, 1000);
