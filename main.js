@@ -139,7 +139,7 @@ function load() {
         }
 
         console.log(game)
-
+        updateMoney();
     }
     catch (e) {
         console.log(e);
@@ -218,12 +218,31 @@ function updateMap() {
 function updateMoney() {
     document.getElementById("artifacts").innerHTML =game.global.artifacts;
     game.global.money *= game.global.interestRate;
-    document.getElementById("money").innerHTML = game.global.money;
+    document.getElementById("money").innerHTML = game.global.money.toFixed(2);
+    if (game.global.money > 80&&game.global.interestRate==1) {
+        document.getElementById("openBank").style.display = "table";
+    }
 }
 function showMoney() {
-    document.getElementById("money").innerHTML = game.global.money;
+    document.getElementById("money").innerHTML = game.global.money.toFixed(2);
     document.getElementById("artifacts").innerHTML = game.global.artifacts;
 }
+
+function sellArtifacts() {
+    game.global.money += game.global.artifacts * game.global.pricePerArtifact;
+    game.global.artifacts = 0;
+    showMoney();
+}
+function openBank() {
+    if (game.global.money >= 100) {
+        game.global.interestRate = 1.0001;
+        game.global.money -= 100;
+        showMoney();
+        document.getElementById("money").style.color = "green";
+        document.getElementById("openBank").style.display = "none";
+    }
+}
+
 
 load();
 console.log(game);

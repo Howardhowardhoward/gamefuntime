@@ -11,17 +11,31 @@ p1 {
 
 .col-mid {
     /*padding-right: 15px;*/
-
     position: relative;
-    width: 33%;
-    left: 40%;
+    width: 33vw;
+    /* left: 40%; */
+    display: inline-block;
+}
+.col-left{
+    position: relative;
+    width: 33vw;
+    height: 30vh;
+    left: 0%;
+    padding-right: 0px;
+    /* margin: 0px; */
+    display: inline-block;
+    vertical-align: top;
+}
+
+headline{
+font-size: 1.5em;
+    font-family: 'Comic Sans MS';
 }
 
 .wall {
     background-color: #ff0000;
     background-position: center;
     /*color: #ffffff;*/
-
     display: inline-block;
     height: 100%;
     padding: 0;
@@ -153,3 +167,7 @@ position: relative;
         overflow: auto;
         width: 100%;
         }
+
+.open-bank{
+    display: none;
+}
