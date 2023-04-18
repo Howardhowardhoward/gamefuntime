@@ -272,9 +272,8 @@ window.setInterval(function () {
 }, 1000);
 
 testThing = matrix();
-testMap(testThing);
-function testMap(map) {
 
+function testMap(map) {
     var iter = 0;
     var row = game.global.startX;
     var col = game.global.startY;
