@@ -136,6 +136,7 @@ function load() {
             for (var item in game.global) {
                 if (typeof savegame.global[item] !== 'undefined') game.global[item] = savegame.global[item];
             }
+            
         }
 
         console.log(game)
@@ -218,14 +219,17 @@ function updateMap() {
 function updateMoney() {
     document.getElementById("artifacts").innerHTML =game.global.artifacts;
     game.global.money *= game.global.interestRate;
-    document.getElementById("money").innerHTML = game.global.money.toFixed(2);
+    showMoney();
     if (game.global.money > 80&&game.global.interestRate==1) {
         document.getElementById("openBank").style.display = "table";
     }
 }
 function showMoney() {
     document.getElementById("money").innerHTML = game.global.money.toFixed(2);
+    document.getElementById("money").style.color = game.global.bankColor;
     document.getElementById("artifacts").innerHTML = game.global.artifacts;
+    document.getElementById("interestRate").innerHTML = game.global.interestRate;
+    document.getElementById("interestRate").style.display = game.global.interestdisplay;
 }
 
 function sellArtifacts() {
@@ -238,8 +242,11 @@ function openBank() {
         game.global.interestRate = 1.0001;
         game.global.money -= 100;
         showMoney();
-        document.getElementById("money").style.color = "green";
+        game.global.bankColor = "green";
+        document.getElementById("money").style.color = game.global.bankColor;
         document.getElementById("openBank").style.display = "none";
+        game.global.interestDisplay = "table";
+        document.getElementById("interestDisplay").style.display = game.global.interestDisplay;
     }
 }
 
@@ -258,8 +265,74 @@ console.log('Done')
 showMoney();
 
 window.setInterval(function () {
-
+    
     save();
     updateMoney();
 
 }, 1000);
+
+testThing = matrix();
+testMap(testThing);
+function testMap(map) {
+
+    var iter = 0;
+    var row = game.global.startX;
+    var col = game.global.startY;
+
+    while(true) {
+    map[row][col] = 'path';
+    var dir = Math.floor(Math.random() * 4) + 1;
+
+        while (col != game.global.mapWidth - 1) {
+            iter++;
+            if (dir == 1) {
+                if (row != 0 && (row > 0 && map[row - 1][col] != 'path') && (row == 1 || (row > 1 && map[row - 2][col] != 'path')) && (col == 0 || col > 0 && map[row - 1][col - 1] != 'path') && (col < game.global.mapWidth - 1 && map[row - 1][col + 1] != 'path')) {
+                    row--;
+                    map[row][col] = 'path';
+                    dir = Math.floor(Math.random() * 4) + 1;
+                }
+                else {
+                    dir = dir + 1;
+                    continue;
+                }
+            }
+            else if (dir == 2) {
+                if (row != game.global.mapHeight - 1 && (row < game.global.mapHeight - 1 && map[row + 1][col] != 'path') && (row == game.global.mapHeight - 2 || (row < game.global.mapHeight - 2 && map[row + 2][col] != 'path')) && (col == 0 || (col > 0 && map[row + 1][col - 1] != 'path')) && (col < game.global.mapWidth - 1 && map[row + 1][col + 1] != 'path')) {
+                    row++;
+                    map[row][col] = 'path';
+                    dir = Math.floor(Math.random() * 4) + 1;
+                }
+                else {
+                    dir = dir + 1;
+                    continue;
+                }
+            }
+            else if (dir == 3) {
+                if (row > 2 && row < game.global.mapHeight - 2 && col != 0 && (col == 1 || (col > 1 && map[row][col - 2] != 'path')) && (map[row - 1][col - 1] != 'path') && (map[row + 1][col - 1] != 'path') && map[row][col - 1] != 'path') {
+                    col--;
+                    map[row][col] = 'path';
+                    dir = Math.floor(Math.random() * 4) + 1;
+                }
+                else {
+                    dir = dir + 1;
+                    continue;
+                }
+            }
+
+            else if (dir == 4) {
+                dir = Math.floor(Math.random() * 4) + 1;
+                if (col != game.global.mapWidth - 1 && (row == 0 || (row > 0 && map[row - 1][col + 1] != 'path')) && (row == game.global.mapHeight - 1 || (row < game.global.mapHeight - 1 && map[row + 1][col + 1] != 'path')) && map[row][col + 1] != 'path') {
+                    col++;
+                    map[row][col] = 'path';
+                }
+                else continue;
+            }
+            if (iter > 100) {
+                console.log(map)
+                break;
+            }
+        }
+    }
+    map[row][col] = "goal";
+    
+}

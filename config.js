@@ -18,11 +18,13 @@ function newGame() {
 
             //Money variables
             money: 0,
+            bankColor: black,
             interestRate: 1.00,
             // Interest rate is 1.00 for now, but will be changed later
+            interestDisplay: "none",
             pricePerArtifact: 1,
 
-            
+           
         },
 
 
