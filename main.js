@@ -285,11 +285,18 @@ function testMap() {
 
         while (col != game.global.mapWidth - 1) {
             iter++;
+            if (iter > 10000) {
+                console.log(map)
+                map = matrix();
+                row = game.global.startX;
+                col = game.global.startY;
+                iter = 0;
+            }
             if (row == game.global.mapHeight - 1 && map[row - 1][col] == 'path') {
                 dir == 4;
             }
             if (dir == 1) {
-                if (row != 0 && (row > 0 && map[row - 1][col] != 'path') && (row == 1 || (row > 1 && map[row - 2][col] != 'path')) && (col == 0 || col > 0 && map[row - 1][col - 1] != 'path') && (col < game.global.mapWidth - 1 && map[row - 1][col + 1] != 'path')) {
+                if (row != 0 && (row > 0 && map[row - 1][col] != 'path') && (row == 1 || (row > 1 && map[row - 2][col] != 'path')) && (col == 0 || col > 0 && map[row - 1][col - 1] != 'path') && (col < game.global.mapWidth - 1 && map[row - 1][col + 1] != 'path')&&(map[row-1][col-1]!='path')&&(map[row-1][col-2]!='path'||map[row-1][col+2]=='wall')) {
                     row--;
                     map[row][col] = 'path';
                     dir = Math.floor(Math.random() * 4) + 1;
@@ -300,7 +307,7 @@ function testMap() {
                 }
             }
             else if (dir == 2) {
-                if (row != game.global.mapHeight - 1 && (row < game.global.mapHeight - 1 && map[row + 1][col] != 'path') && (row == game.global.mapHeight - 2 || (row < game.global.mapHeight - 2 && map[row + 2][col] != 'path')) && (col == 0 || (col > 0 && map[row + 1][col - 1] != 'path')) && (col < game.global.mapWidth - 1 && map[row + 1][col + 1] != 'path')) {
+                if (row != game.global.mapHeight - 1 && (row < game.global.mapHeight - 1 && map[row + 1][col] != 'path') && (row == game.global.mapHeight - 2 || (row < game.global.mapHeight - 2 && map[row + 2][col] != 'path')) && (col == 0 || (col > 0 && map[row + 1][col - 1] != 'path')) && (col < game.global.mapWidth - 1 && map[row + 1][col + 1] != 'path') && (map[row+1][col-1]!='path')) {
                     row++;
                     map[row][col] = 'path';
                     dir = Math.floor(Math.random() * 4) + 1;
@@ -311,7 +318,7 @@ function testMap() {
                 }
             }
             else if (dir == 3) {
-                if (row > 2 && row < game.global.mapHeight - 2 && col != 0 && (col == 1 || (col > 2 && map[row][col - 3] != 'path')) && (map[row - 1][col - 1] != 'path') && (map[row + 1][col - 1] != 'path') && map[row][col - 1] != 'path') {
+                if (row > 2 && row < game.global.mapHeight - 2 && col != 0 && (col == 1 || (col > 2 && map[row][col - 2] != 'path')) && (map[row - 1][col - 1] != 'path') && (map[row + 1][col - 1] != 'path') && map[row][col - 1] != 'path' && (map[row-1][col-2]!='path'&&map[row+1][col+2])) {
                     col--;
                     map[row][col] = 'path';
                     dir = Math.floor(Math.random() * 4) + 1;
@@ -330,15 +337,14 @@ function testMap() {
                 }
                 else continue;
             }
-            if (iter > 100) {
-                console.log(map)
-                break;
-            }
+            
+
         }
         map = matrix();
         row = game.global.startX;
         col = game.global.startY;
-        iter=0;
+        iter = 0;
+        
     } 
   
     
