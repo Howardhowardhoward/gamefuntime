@@ -168,6 +168,17 @@ position: relative;
         width: 100%;
         }
 
+.littler{
+    position: relative;
+        text-align: center;
+        font-size: 0.5em;
+        font-family: 'Comic Sans MS';
+        display: table;
+        margin: 0;
+        overflow: auto;
+        width: 100%;
+}
+
 .open-bank{
     display: none;
 }

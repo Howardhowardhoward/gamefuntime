@@ -13,6 +13,7 @@ gamemap = matrix();
 
 function makePath(map) {
     /* debugger*/
+    var iter = 0;
     var row = game.global.startX;
     var col = game.global.startY;
     map[row][col] = 'path'; 
@@ -21,6 +22,14 @@ function makePath(map) {
     var dir = Math.floor(Math.random() * 4) + 1;
 
     while (col != game.global.mapWidth - 1) {
+        iter++;
+        if (iter > 10000) {
+            row = game.global.startX;
+            col = game.global.startY;
+            map = matrix();
+            map[row][col] = 'path';
+            game.global.playerPosition = [row, col];
+        }
         if (dir == 1) {
             if (row != 0 && (row > 0 && map[row - 1][col] != 'path') && (row == 1 || (row > 1 && map[row - 2][col] != 'path')) && (col == 0 || col > 0 && map[row - 1][col - 1] != 'path') && (col < game.global.mapWidth - 1 && map[row - 1][col + 1] != 'path')) {
                 row--;
@@ -225,6 +234,29 @@ function updateMoney() {
 }
 function showMoney() {
     document.getElementById("money").innerHTML = game.global.money.toFixed(2);
+    if (game.global.interestRate > 1) {
+        document.getElementById("money").style.color = "green";
+    }
+    if (game.global.interestRate < 1) {
+        document.getElementById("money").style.color = "red";
+    }
+    if (game.global.bankOpen){
+        document.getElementById("interestRate").style.display = "table";
+        document.getElementById("interestRate").innerHTML = "Interest Rate: " +(game.global.interestRate * 100 - 100).toFixed(2) + "%";
+        if(game.global.interestRate>1){
+            document.getElementById("interestRate").style.color = "green";
+        }
+        if (game.global.interestRate < 1) {
+            document.getElementById("interestRate").style.color = "red";
+        }
+        if (game.global.interestRate == 1) {
+            document.getElementById("interestRate").style.color= "black";
+        }
+        if (game.global.artifactRate == 0) {
+            document.getElementById("artifactRate").innerHTML = "Artifacts/sec: ";
+        }
+    }
+
     document.getElementById("artifacts").innerHTML = game.global.artifacts;
 }
 
@@ -238,8 +270,9 @@ function openBank() {
         game.global.interestRate = 1.0001;
         game.global.money -= 100;
         showMoney();
-        document.getElementById("money").style.color = "green";
         document.getElementById("openBank").style.display = "none";
+        game.global.bankOpen = true;
+        showMoney();
     }
 }
 

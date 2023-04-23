@@ -14,11 +14,13 @@ function newGame() {
             deadMap: true,
             playerPosition: -1,
             gotArtifact: false,
-            artifacts:0,
+            artifacts: 0,
+            artifactRate: 0,
 
             //Money variables
             money: 0,
             interestRate: 1.00,
+            bankOpen: false,
             // Interest rate is 1.00 for now, but will be changed later
             pricePerArtifact: 1,
 
