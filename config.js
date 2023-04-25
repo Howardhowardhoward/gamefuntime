@@ -5,7 +5,10 @@ function newGame() {
             version: "0.0.1",
             // Global variables
             mapWidth: 10,
-            mapHeight: 7,
+            mapHeight: 5,
+            newMapWidth: 10,
+            newMapHeight: 5,
+
             startX: 3,
             startY: 0,
 
@@ -23,6 +26,12 @@ function newGame() {
             bankOpen: false,
             // Interest rate is 1.00 for now, but will be changed later
             pricePerArtifact: 1,
+
+            // upgrade variables
+            mapSizeUpgradeCost: 50,
+            showBankUpgrade: false,
+            showMapSizeUpgrade: false,
+
 
             
         },

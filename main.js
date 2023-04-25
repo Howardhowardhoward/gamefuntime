@@ -7,9 +7,9 @@ let centralMessage;
 
 
 
-const matrix = () => new Array(game.global.mapHeight).fill().map((o) => new Array(game.global.mapWidth).fill("wall"))
+const matrix = (y,x) => new Array(y).fill().map((o) => new Array(x).fill("wall"))
 
-gamemap = matrix();
+gamemap = matrix(game.global.mapHeight, game.global.mapWidth);
 
 function makePath(map) {
     /* debugger*/
@@ -145,6 +145,10 @@ function load() {
             for (var item in game.global) {
                 if (typeof savegame.global[item] !== 'undefined') game.global[item] = savegame.global[item];
             }
+            if (game.global.interestRate != 1) {
+                game.global.bankOpen = true;
+            }
+           
         }
 
         console.log(game)
@@ -209,7 +213,13 @@ document.addEventListener('keydown', function (event) {
     if (game.global.gotArtifact && game.global.playerPosition[0] == game.global.startX && game.global.playerPosition[1] == game.global.startY) {
         game.global.artifacts++;
         game.global.gotArtifact = false;
-        game.global.map = matrix();
+        if (game.global.newMapHeight != game.global.mapHeight) {
+            game.global.mapHeight = game.global.newMapHeight;
+        }
+        if (game.global.newMapWidth != game.global.mapWidth) {
+            game.global.mapWidth = game.global.newMapWidth;
+        }
+        game.global.map = matrix(game.global.mapHeight, game.global.mapWidth);
         makePath(game.global.map);
         updateMap();
         showMoney();
@@ -228,9 +238,7 @@ function updateMoney() {
     document.getElementById("artifacts").innerHTML =game.global.artifacts;
     game.global.money *= game.global.interestRate;
     document.getElementById("money").innerHTML = game.global.money.toFixed(2);
-    if (game.global.money > 80&&game.global.interestRate==1) {
-        document.getElementById("openBank").style.display = "table";
-    }
+    
 }
 function showMoney() {
     document.getElementById("money").innerHTML = game.global.money.toFixed(2);
@@ -253,18 +261,36 @@ function showMoney() {
             document.getElementById("interestRate").style.color= "black";
         }
         if (game.global.artifactRate == 0) {
-            document.getElementById("artifactRate").innerHTML = "Artifacts/sec: ";
+            document.getElementById("artifactRate").innerHTML = "Price per Artifact: $"+ (game.global.pricePerArtifact).toFixed(2);
         }
     }
 
     document.getElementById("artifacts").innerHTML = game.global.artifacts;
+    checkUpgrades();
 }
 
 function sellArtifacts() {
     game.global.money += game.global.artifacts * game.global.pricePerArtifact;
     game.global.artifacts = 0;
     showMoney();
+    
 }
+
+
+function checkUpgrades() {
+    if ((game.global.money > 80 && !game.global.bankOpen)||game.global.showBankUpgrade) {
+        document.getElementById("openBank").style.display = "table";
+        game.global.showBankUpgrade = true;
+    }
+
+    if ((game.global.money >= 0.6 * game.global.mapSizeUpgradeCost && game.global.mapHeight<11)||game.global.showMapSizeUpgrade) {
+        document.getElementById("mapSizeUpgrade").style.display = "table";
+        document.getElementById("mapSizeUpgradeButton").innerHTML = "$" + game.global.mapSizeUpgradeCost;
+        game.global.showMapSizeUpgrade = true;
+    }
+
+}
+
 function openBank() {
     if (game.global.money >= 100) {
         game.global.interestRate = 1.0001;
@@ -272,7 +298,23 @@ function openBank() {
         showMoney();
         document.getElementById("openBank").style.display = "none";
         game.global.bankOpen = true;
+        game.global.showBankUpgrade = false;
         showMoney();
+
+    }
+}
+
+function mapSizeUpgrade() {
+    if (game.global.money >= game.global.mapSizeUpgradeCost) {
+        game.global.newMapHeight = game.global.mapHeight+1;
+        game.global.newMapWidth = game.global.mapWidth + 1;
+        game.global.starty = Math.floor(game.global.newMapHeight / 2);
+        game.global.money -= game.global.mapSizeUpgradeCost;
+        game.global.mapSizeUpgradeCost *= 2;
+        game.global.pricePerArtifact += 0.5;
+        document.getElementById("mapSizeUpgrade").style.display = "none";
+        showMoney();
+        game.global.showMapSizeUpgrade = false;
     }
 }
 
@@ -294,5 +336,4 @@ window.setInterval(function () {
 
     save();
     updateMoney();
-
 }, 1000);
