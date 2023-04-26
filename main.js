@@ -7,7 +7,7 @@ let centralMessage;
 
 
 
-const matrix = (y,x) => new Array(y).fill().map((o) => new Array(x).fill("wall"))
+const matrix = (y, x) => new Array(y).fill().map((o) => new Array(x).fill("wall"))
 
 gamemap = matrix(game.global.mapHeight, game.global.mapWidth);
 
@@ -16,7 +16,7 @@ function makePath(map) {
     var iter = 0;
     var row = game.global.startX;
     var col = game.global.startY;
-    map[row][col] = 'path'; 
+    map[row][col] = 'path';
     game.global.playerPosition = [row, col];
     console.log(game.global.playerPosition)
     var dir = Math.floor(Math.random() * 4) + 1;
@@ -111,6 +111,9 @@ function displayMap(gamemap) {
             else if (gamemap[x][y] == "shadow") {
                 cell.className = "shadow";
             }
+            else {
+                cell.className = gamemap[x][y];
+            }
 
             row.appendChild(cell);
             cell.style.width = (100 / game.global.mapWidth) + "%";
@@ -148,7 +151,7 @@ function load() {
             if (game.global.interestRate != 1) {
                 game.global.bankOpen = true;
             }
-           
+
         }
 
         console.log(game)
@@ -163,44 +166,84 @@ function load() {
 
 }
 
-
-
-
-
 document.addEventListener('keydown', function (event) {
     playerRow = game.global.playerPosition[0];
     playerCol = game.global.playerPosition[1];
     shadow = false;
+    newState = 0;
+    wallStates = ["wall", "wallBreak1", "wallBreak2", "wallBreak3", "wallBreak4"];
     if (event.key == "ArrowLeft") {
         centralMessage = 'Left was pressed';
         document.getElementById("message").innerHTML = centralMessage;
-        if (playerCol > 0 && game.global.map[playerRow][playerCol - 1] != 'wall') {
+        if (playerCol > 0 && !wallStates.includes(game.global.map[playerRow][playerCol - 1])) {
             game.global.playerPosition[1] = playerCol - 1;
             shadow = true;
+        }
+        else if (playerCol > 0 && !event.repeat) {
+            newState = wallStates.indexOf(game.global.map[playerRow][playerCol - 1]) + game.global.drillLevel;
+            if (newState >= wallStates.length) {
+                game.global.map[playerRow][playerCol - 1] = "path";
+            }
+            else {
+                game.global.map[playerRow][playerCol - 1] = wallStates[newState];
+            }
         }
 
     }
     else if (event.key == "ArrowRight") {
         centralMessage = 'Right was pressed';
         document.getElementById("message").innerHTML = centralMessage;
-        if (playerCol < game.global.mapWidth - 1 && game.global.map[playerRow][playerCol + 1] != 'wall')
+        if (playerCol < game.global.mapWidth - 1 && !wallStates.includes(game.global.map[playerRow][playerCol + 1])) {
             game.global.playerPosition[1] = playerCol + 1;
-        shadow = true;
+            shadow = true;
+        }
+        else if (playerCol < game.global.mapWidth - 1 && !event.repeat) {
+            newState = wallStates.indexOf(game.global.map[playerRow][playerCol + 1]) + game.global.drillLevel;
+            if (newState >= wallStates.length) {
+                game.global.map[playerRow][playerCol + 1] = "path";
+            }
+            else {
+                game.global.map[playerRow][playerCol + 1] = wallStates[newState];
+            }
+        }
+
     }
     else if (event.key == "ArrowDown") {
         centralMessage = 'Down was pressed';
         document.getElementById("message").innerHTML = centralMessage;
-        if (playerRow > 0 && game.global.map[playerRow - 1][playerCol] != "wall") {
+        if (playerRow > 0 && !wallStates.includes(game.global.map[playerRow - 1][playerCol])) {
             game.global.playerPosition[0] = playerRow - 1;
             shadow = true;
+        }
+        else if (playerRow > 0 && !event.repeat) {
+            newState = wallStates.indexOf(game.global.map[playerRow - 1][playerCol]) + game.global.drillLevel;
+            if (newState >= wallStates.length) {
+                game.global.map[playerRow - 1][playerCol] = "path";
+            }
+            else {
+                game.global.map[playerRow - 1][playerCol] = wallStates[newState];
+            }
+
         }
     }
     else if (event.key == "ArrowUp") {
         centralMessage = 'Up was pressed';
         document.getElementById("message").innerHTML = centralMessage;
-        if (playerRow < game.global.mapHeight - 1 && game.global.map[playerRow + 1][playerCol] != "wall")
+        if (playerRow < game.global.mapHeight - 1 && !wallStates.includes(game.global.map[playerRow + 1][playerCol])) {
+
+
             game.global.playerPosition[0] = playerRow + 1;
-        shadow = true;
+            shadow = true;
+        }
+        else if (playerRow < game.global.mapHeight - 1 && !event.repeat) {
+            newState = wallStates.indexOf(game.global.map[playerRow + 1][playerCol]) + game.global.drillLevel;
+            if (newState >= wallStates.length) {
+                game.global.map[playerRow + 1][playerCol] = "path";
+            }
+            else {
+                game.global.map[playerRow + 1][playerCol] = wallStates[newState];
+            }
+        }
     }
     if (game.global.map[game.global.playerPosition[0]][game.global.playerPosition[1]] == 'goal') {
         game.global.gotArtifact = true;
@@ -235,10 +278,10 @@ function updateMap() {
 }
 
 function updateMoney() {
-    document.getElementById("artifacts").innerHTML =game.global.artifacts;
+    document.getElementById("artifacts").innerHTML = game.global.artifacts;
     game.global.money *= game.global.interestRate;
     document.getElementById("money").innerHTML = game.global.money.toFixed(2);
-    
+
 }
 function showMoney() {
     document.getElementById("money").innerHTML = game.global.money.toFixed(2);
@@ -248,20 +291,20 @@ function showMoney() {
     if (game.global.interestRate < 1) {
         document.getElementById("money").style.color = "red";
     }
-    if (game.global.bankOpen){
+    if (game.global.bankOpen) {
         document.getElementById("interestRate").style.display = "table";
-        document.getElementById("interestRate").innerHTML = "Interest Rate: " +(game.global.interestRate * 100 - 100).toFixed(2) + "%";
-        if(game.global.interestRate>1){
+        document.getElementById("interestRate").innerHTML = "Interest Rate: " + (game.global.interestRate * 100 - 100).toFixed(2) + "%";
+        if (game.global.interestRate > 1) {
             document.getElementById("interestRate").style.color = "green";
         }
         if (game.global.interestRate < 1) {
             document.getElementById("interestRate").style.color = "red";
         }
         if (game.global.interestRate == 1) {
-            document.getElementById("interestRate").style.color= "black";
+            document.getElementById("interestRate").style.color = "black";
         }
         if (game.global.artifactRate == 0) {
-            document.getElementById("artifactRate").innerHTML = "Price per Artifact: $"+ (game.global.pricePerArtifact).toFixed(2);
+            document.getElementById("artifactRate").innerHTML = "Price per Artifact: $" + (game.global.pricePerArtifact).toFixed(2);
         }
     }
 
@@ -273,20 +316,26 @@ function sellArtifacts() {
     game.global.money += game.global.artifacts * game.global.pricePerArtifact;
     game.global.artifacts = 0;
     showMoney();
-    
+
 }
 
 
 function checkUpgrades() {
-    if ((game.global.money > 80 && !game.global.bankOpen)||game.global.showBankUpgrade) {
+    if ((game.global.money > 80 && !game.global.bankOpen) || game.global.showBankUpgrade) {
         document.getElementById("openBank").style.display = "table";
         game.global.showBankUpgrade = true;
     }
 
-    if ((game.global.money >= 0.6 * game.global.mapSizeUpgradeCost && game.global.mapHeight<11)||game.global.showMapSizeUpgrade) {
+    if ((game.global.money >= 0.6 * game.global.mapSizeUpgradeCost && game.global.mapHeight < 11) || game.global.showMapSizeUpgrade) {
         document.getElementById("mapSizeUpgrade").style.display = "table";
         document.getElementById("mapSizeUpgradeButton").innerHTML = "$" + game.global.mapSizeUpgradeCost;
         game.global.showMapSizeUpgrade = true;
+    }
+
+    if ((game.global.money >= 0.6 * game.global.drillUpgradeCost && game.global.drillLevel < 5) || game.global.showDrillUpgrade) {
+        document.getElementById("drillUpgrade").style.display = "table";
+        document.getElementById("drillUpgradeButton").innerHTML = "$" + game.global.drillUpgradeCost;
+        game.global.showDrillUpgrade = true;
     }
 
 }
@@ -306,15 +355,31 @@ function openBank() {
 
 function mapSizeUpgrade() {
     if (game.global.money >= game.global.mapSizeUpgradeCost) {
-        game.global.newMapHeight = game.global.mapHeight+1;
+        game.global.newMapHeight = game.global.mapHeight + 1;
         game.global.newMapWidth = game.global.mapWidth + 1;
         game.global.starty = Math.floor(game.global.newMapHeight / 2);
         game.global.money -= game.global.mapSizeUpgradeCost;
-        game.global.mapSizeUpgradeCost *= 2;
+        game.global.mapSizeUpgradeCost *= game.global.mapSizePriceScale;
+        game.global.mapSizePriceScale += 1;
         game.global.pricePerArtifact += 0.5;
         document.getElementById("mapSizeUpgrade").style.display = "none";
-        showMoney();
         game.global.showMapSizeUpgrade = false;
+        showMoney();
+
+    }
+}
+
+function drillUpgrade() {
+    if (game.global.money >= game.global.drillUpgradeCost) {
+        game.global.drillLevel++;
+        game.global.money -= game.global.drillUpgradeCost;
+        game.global.drillUpgradeCost *= game.global.drillPriceScale;
+        game.global.drillPriceScale += 1.5;
+        document.getElementById("drillUpgrade").style.display = "none";
+        document.getElementById("drillUpgrade").innerHTML = "<h2>Increase the drill power by 1: <button id='drillUpgradeButton' onclick='drillUpgrade()'></button></h2>"
+        game.global.showDrillUpgrade = false;
+        showMoney();
+
     }
 }
 

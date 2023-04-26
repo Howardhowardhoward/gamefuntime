@@ -41,6 +41,42 @@ font-size: 1.5em;
     padding: 0;
 }
 
+.wallBreak1{
+background-color: #ff4600;
+    background-position: center;
+    /*color: #ffffff;*/
+    display: inline-block;
+    height: 100%;
+    padding: 0;
+}
+
+.wallBreak2{
+background-color: #ff8c00;
+    background-position: center;
+    /*color: #ffffff;*/
+    display: inline-block;
+    height: 100%;
+    padding: 0;
+}
+
+.wallBreak3{
+background-color: #ffac00;
+    background-position: center;
+    /*color: #ffffff;*/
+    display: inline-block;
+    height: 100%;
+    padding: 0;
+}
+
+.wallBreak4{
+background-color: #ffcb00;
+    background-position: center;
+    /*color: #ffffff;*/
+    display: inline-block;
+    height: 100%;
+    padding: 0;
+}
+
 .path {
     background-color: #ffd800;
     background-position: center;

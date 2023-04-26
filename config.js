@@ -13,7 +13,7 @@ function newGame() {
             startY: 0,
 
             // Game variables
-            map:[], 
+            map: [],
             deadMap: true,
             playerPosition: -1,
             gotArtifact: false,
@@ -31,9 +31,16 @@ function newGame() {
             mapSizeUpgradeCost: 50,
             showBankUpgrade: false,
             showMapSizeUpgrade: false,
+            mapSizePriceScale: 2,
+
+            drillUpgradeCost: 200,
+            drillLevel: 0,
+            showDrillUpgrade: false,
+            drillPriceScale: 2,
 
 
-            
+
+
         },
 
 
