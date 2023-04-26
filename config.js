@@ -21,7 +21,7 @@ function newGame() {
             artifactRate: 0,
 
             //Money variables
-            money: 0,
+            money: 100000,
             interestRate: 1.00,
             bankOpen: false,
             // Interest rate is 1.00 for now, but will be changed later
