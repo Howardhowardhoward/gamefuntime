@@ -89,14 +89,14 @@ function displayMap(gamemap) {
         var row = document.createElement("row");
         grid.insertBefore(row, grid.childNodes[0]);
         row.setAttribute("id", "row" + x);
-        row.className = "row";
+        row.className = "game-row flex-grow-1";
         row.style.height = (100 / game.global.mapHeight) + "%";
         for (var y = 0; y <= game.global.mapWidth - 1; y++) {
             var cell = document.createElement("block");
             cell.setAttribute("id", x + ', ' + y)
             if (gamemap[x][y] == 'wall') {
 
-                cell.className = "wall";
+                cell.className = "wall flex-grow-1";
             }
             else if (gamemap[x][y] == 'path') {
 
@@ -326,7 +326,7 @@ function checkUpgrades() {
         game.global.showBankUpgrade = true;
     }
 
-    if ((game.global.money >= 0.6 * game.global.mapSizeUpgradeCost && game.global.mapHeight < 11) || game.global.showMapSizeUpgrade) {
+    if ((game.global.money >= 0.6 * game.global.mapSizeUpgradeCost && game.global.mapHeight < 15) || game.global.showMapSizeUpgrade) {
         document.getElementById("mapSizeUpgrade").style.display = "table";
         document.getElementById("mapSizeUpgradeButton").innerHTML = "$" + game.global.mapSizeUpgradeCost;
         game.global.showMapSizeUpgrade = true;

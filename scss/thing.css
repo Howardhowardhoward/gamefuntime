@@ -4,6 +4,9 @@ html {
     overflow: auto;
 }
 
+
+
+
 p1 {
     font-size: 1.5em;
     font-family: sans-serif;
@@ -12,19 +15,30 @@ p1 {
 .col-mid {
     /*padding-right: 15px;*/
     position: relative;
-    width: 33vw;
+    width: 32.5vw;
     /* left: 40%; */
     display: inline-block;
 }
 .col-left{
     position: relative;
-    width: 33vw;
-    height: 30vh;
+    width: 32.5vw;
     left: 0%;
     padding-right: 0px;
     /* margin: 0px; */
     display: inline-block;
     vertical-align: top;
+    background-color:antiquewhite;
+}
+
+.col-right{
+position: relative;
+    width: 32.5vw;
+    padding-right: 0px;
+    padding-left:3px;
+    /* margin: 0px; */
+    display: inline-block;
+    vertical-align: top;
+    background-color:antiquewhite;
 }
 
 headline{
@@ -34,7 +48,7 @@ font-size: 1.5em;
 
 .wall {
     background-color: #ff0000;
-    background-position: center;
+    /* background-position: center; */
     /*color: #ffffff;*/
     display: inline-block;
     height: 100%;
@@ -146,18 +160,34 @@ background-color: #ffcb00;
     color: #ffffff;
     width: 100%;
     height: 300px;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
 }
 
-.row {
+.row-1 {
+    height: auto;
     position: relative;
     text-align: center;
     font-size: 1.5em;
-    font-family: sans-serif;
     display: table;
+    /* margin: 0; */
+    
+    overflow: auto;
+    width: 100%;
+    background-color:antiquewhite;
+}
+.game-row {
+    height: auto;
+    position: relative;
+    text-align: center;
+    font-size: 1.5em;
+    display: flex;
     margin: 0;
     overflow: auto;
-    width: 100%
+    width: 100%;
+    background-color: antiquewhite;
 }
+
 
 .finances{
     position: relative;
