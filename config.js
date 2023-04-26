@@ -2,7 +2,7 @@ function newGame() {
     var toReturn = {
         global: {
             //version Number:
-            version: "0.0.1",
+            version: "0.0.3",
             // Global variables
             mapWidth: 10,
             mapHeight: 5,
