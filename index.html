@@ -14,7 +14,7 @@
 </head>
 <body style="background-color:burlywood">
     <h1>Hello!</h1>
-    <button id="reset" onclick="deleteSave()">reset</button>
+    <button class="btn btn-light" id="reset" onclick="deleteSave()" style="border: 0.2rem var( --bs-success-border-subtle) solid ">reset</button>
     <div class="finances"> 
         <div class="left" id="left">
             Money
@@ -31,14 +31,14 @@
     <div class="col-mid" id="message">
         Help me
     </div>
-    <div class="container" style="background-color: antiquewhite">
+    <div class="container-xxl" style="background-color: antiquewhite; width:100%" >
         <div class="row">
             <div class="col">
                 <h1>MARKETPLACE</h1>
-                <h2>Sell your artifacts for cash: <button onclick="sellArtifacts()">sell artifacts</button></h2>
-                <div class="upgrade" id="openBank"><h2>Open up a bank account (start gaining interest): <button onclick="openBank()">$100 fee</button></h2></div>
-                <div class="upgrade" id="mapSizeUpgrade"><h2>Increase the size of the map by 1 in each direction, increase value per artifact by 0.5: <button class="btn btn-light rounded-pill px-3" onclick="mapSizeUpgrade()" id="mapSizeUpgradeButton"></button></h2></div>
-                <div class="upgrade" id="drillUpgrade"><h2>Unlock a drill to help you break through walls: <button onclick="drillUpgrade()" id="drillUpgradeButton"></button></h2></div>
+                <h2>Sell your artifacts for cash: <button class="btn btn-light" onclick="sellArtifacts()" style="border: 0.2rem var( --bs-success-border-subtle) solid ">sell artifacts</button></h2>
+                <div class="upgrade" id="openBank"><h2>Open up a bank account (start gaining interest): <button class ="btn btn-light " onclick="openBank()" style="border: 0.2rem var( --bs-success-border-subtle) solid ">$100 fee</button></h2></div>
+                <div class="upgrade" id="mapSizeUpgrade"><h2>Increase the size of the map by 1 in each direction, increase value per artifact by 0.5: <button class="btn btn-light rounded-pill px-3" onclick="mapSizeUpgrade()" id="mapSizeUpgradeButton" style="border: 0.2rem var( --bs-success-border-subtle) solid "</button></h2></div>
+                <div class="upgrade" id="drillUpgrade"><h2>Unlock a drill to help you break through walls: <button class="btn btn-light"  onclick="drillUpgrade()" id="drillUpgradeButton" style="border: 0.2rem var( --bs-success-border-subtle) solid "></button></h2></div>
             </div>
 
             <div class="col">

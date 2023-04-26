@@ -14,8 +14,8 @@ gamemap = matrix(game.global.mapHeight, game.global.mapWidth);
 function makePath(map) {
     /* debugger*/
     var iter = 0;
-    var row = game.global.startX;
-    var col = game.global.startY;
+    var row = game.global.startY - 1;
+    var col = game.global.startX;
     map[row][col] = 'path';
     game.global.playerPosition = [row, col];
     console.log(game.global.playerPosition)
@@ -24,11 +24,12 @@ function makePath(map) {
     while (col != game.global.mapWidth - 1) {
         iter++;
         if (iter > 10000) {
-            row = game.global.startX;
-            col = game.global.startY;
-            map = matrix();
+            row = game.global.startY;
+            col = game.global.startX;
+            map = matrix(game.global.mapHeight, game.global.mapWidth);
             map[row][col] = 'path';
             game.global.playerPosition = [row, col];
+            iter = 0;
         }
         if (dir == 1) {
             if (row != 0 && (row > 0 && map[row - 1][col] != 'path') && (row == 1 || (row > 1 && map[row - 2][col] != 'path')) && (col == 0 || col > 0 && map[row - 1][col - 1] != 'path') && (col < game.global.mapWidth - 1 && map[row - 1][col + 1] != 'path')) {
@@ -76,6 +77,7 @@ function makePath(map) {
     }
     map[row][col] = "goal";
     map[game.global.playerPosition[0]][game.global.playerPosition[1]] = "player";
+    game.global.map=map;
 }
 
 
@@ -118,7 +120,7 @@ function displayMap(gamemap) {
             row.appendChild(cell);
             cell.style.width = (100 / game.global.mapWidth) + "%";
 
-            if (game.global.gotArtifact && x == game.global.startX && y == game.global.startY) {
+            if (game.global.gotArtifact && x == game.global.startY - 1 && y == game.global.startX) {
                 cell.className = "return"
             }
         }
@@ -253,15 +255,12 @@ document.addEventListener('keydown', function (event) {
     if (shadow) {
         game.global.map[playerRow][playerCol] = 'shadow';
     }
-    if (game.global.gotArtifact && game.global.playerPosition[0] == game.global.startX && game.global.playerPosition[1] == game.global.startY) {
+    if (game.global.gotArtifact && game.global.playerPosition[0] == game.global.startY - 1 && game.global.playerPosition[1] == game.global.startX) {
         game.global.artifacts++;
         game.global.gotArtifact = false;
-        if (game.global.newMapHeight != game.global.mapHeight) {
-            game.global.mapHeight = game.global.newMapHeight;
-        }
-        if (game.global.newMapWidth != game.global.mapWidth) {
-            game.global.mapWidth = game.global.newMapWidth;
-        }
+        game.global.mapHeight = game.global.newMapHeight;
+        game.global.mapWidth = game.global.newMapWidth;
+        game.global.startY = game.global.newStartY;
         game.global.map = matrix(game.global.mapHeight, game.global.mapWidth);
         makePath(game.global.map);
         updateMap();
@@ -355,9 +354,9 @@ function openBank() {
 
 function mapSizeUpgrade() {
     if (game.global.money >= game.global.mapSizeUpgradeCost) {
-        game.global.newMapHeight = game.global.mapHeight + 1;
-        game.global.newMapWidth = game.global.mapWidth + 1;
-        game.global.starty = Math.floor(game.global.newMapHeight / 2);
+        game.global.newMapHeight += 1;
+        game.global.newMapWidth += 1;
+        game.global.newStartY = Math.floor(game.global.newMapHeight / 2);
         game.global.money -= game.global.mapSizeUpgradeCost;
         game.global.mapSizeUpgradeCost *= game.global.mapSizePriceScale;
         game.global.mapSizePriceScale += 1;
@@ -376,7 +375,7 @@ function drillUpgrade() {
         game.global.drillUpgradeCost *= game.global.drillPriceScale;
         game.global.drillPriceScale += 1.5;
         document.getElementById("drillUpgrade").style.display = "none";
-        document.getElementById("drillUpgrade").innerHTML = "<h2>Increase the drill power by 1: <button id='drillUpgradeButton' onclick='drillUpgrade()'></button></h2>"
+        document.getElementById("drillUpgrade").innerHTML = '<h2>Increase drill power by 1: <button class="btn btn-light" onclick="drillUpgrade()" id="drillUpgradeButton" style="border: 0.2rem var( --bs-success-border-subtle) solid "></button></h2>'
         game.global.showDrillUpgrade = false;
         showMoney();
 

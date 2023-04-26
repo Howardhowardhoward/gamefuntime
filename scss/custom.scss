@@ -2,7 +2,11 @@
 
 @import "../node_modules/bootstrap/scss/functions";
 @import "../node_modules/bootstrap/scss/variables";
-$font-family-base: Comic Sans MS;
+$font-family-base: Comic Sans MS; 
 
 $border-radius: 5rem;
+
+$container-max-widths: ( sm: 540px, md: 720px, lg: 960px, xl: 1140px, xxl: 100% );
+
+
 @import "../node_modules/bootstrap/scss/bootstrap";

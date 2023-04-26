@@ -9,8 +9,9 @@ function newGame() {
             newMapWidth: 10,
             newMapHeight: 5,
 
-            startX: 3,
-            startY: 0,
+            startY: 3,
+            newStartY: 3,
+            startX: 0,
 
             // Game variables
             map: [],
