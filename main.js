@@ -84,7 +84,7 @@ function makePath(map) {
 function displayMap(gamemap) {
     var grid = document.getElementById("grid");
     grid.innerHTML = "";
-    var className = "magma";
+    var className = "magma rounded-3";
     grid.className = className;
 
     for (var x = 0; x <= game.global.mapHeight - 1; x++) {
@@ -94,8 +94,9 @@ function displayMap(gamemap) {
         row.className = "game-row flex-grow-1";
         row.style.height = (100 / game.global.mapHeight) + "%";
         for (var y = 0; y <= game.global.mapWidth - 1; y++) {
-            var cell = document.createElement("block");
+            var cell = document.createElement("cell");
             cell.setAttribute("id", x + ', ' + y)
+            
             if (gamemap[x][y] == 'wall') {
 
                 cell.className = "wall flex-grow-1";
@@ -106,6 +107,9 @@ function displayMap(gamemap) {
             }
             else if (gamemap[x][y] == 'goal') {
                 cell.className = "goal";
+                if (game.global.mapsCompleted == 10) {
+                    cell.innerHTML = "<img src='imgs/rat.jpg' style = 'max-width: 75%; max-height: 90%; margin: auto;' align='center'>";
+                }
             }
             else if (gamemap[x][y] == 'player') {
                 cell.className = (game.global.gotArtifact) ? "playerLoaded" : "player";
@@ -152,6 +156,16 @@ function load() {
             }
             if (game.global.interestRate != 1) {
                 game.global.bankOpen = true;
+            }
+            if (game.global.ratUnlocked) {
+                prompt = document.createElement("div")
+                prompt.className = "p-2 text-start rounded-1 show fade";
+                prompt.style.backgroundColor = "indianred";
+                prompt.style.color = "antiquewhite";
+                prompt.style.fontSize = "1.5rem";
+                game.global.promptBGColor ="brown"
+                document.getElementById("infoBox").appendChild(prompt);
+                prompt.innerHTML = "Welcome back!";
             }
 
         }
@@ -256,6 +270,7 @@ document.addEventListener('keydown', function (event) {
         game.global.map[playerRow][playerCol] = 'shadow';
     }
     if (game.global.gotArtifact && game.global.playerPosition[0] == game.global.startY - 1 && game.global.playerPosition[1] == game.global.startX) {
+        game.global.mapsCompleted++;
         game.global.artifacts++;
         game.global.gotArtifact = false;
         game.global.mapHeight = game.global.newMapHeight;
@@ -290,7 +305,7 @@ function showMoney() {
     if (game.global.interestRate < 1) {
         document.getElementById("money").style.color = "red";
     }
-    if (game.global.bankOpen) {
+    if (game.global.mapWidth>9) {
         document.getElementById("interestRate").style.display = "table";
         document.getElementById("interestRate").innerHTML = "Interest Rate: " + (game.global.interestRate * 100 - 100).toFixed(2) + "%";
         if (game.global.interestRate > 1) {
@@ -303,7 +318,7 @@ function showMoney() {
             document.getElementById("interestRate").style.color = "black";
         }
         if (game.global.artifactRate == 0) {
-            document.getElementById("artifactRate").innerHTML = "Price per Artifact: $" + (game.global.pricePerArtifact).toFixed(2);
+            document.getElementById("artifactRate").innerHTML = "Price per Artifact: $" + (game.global.pricePerArtifact*1).toFixed(2);
         }
     }
 
@@ -313,6 +328,7 @@ function showMoney() {
 
 function sellArtifacts() {
     game.global.money += game.global.artifacts * game.global.pricePerArtifact;
+    game.global.artifactsSold += game.global.artifacts;
     game.global.artifacts = 0;
     showMoney();
 
@@ -336,7 +352,14 @@ function checkUpgrades() {
         document.getElementById("drillUpgradeButton").innerHTML = "$" + game.global.drillUpgradeCost;
         game.global.showDrillUpgrade = true;
     }
+    if (game.global.mapsCompleted >= 11) {
+        document.getElementById("ratCol").className = "container fade show";
+        document.getElementById("infoBox").className += " show";
+        game.global.ratUnlocked = true;
+       
+    }
 
+checkPrompts();
 }
 
 function openBank() {
@@ -360,10 +383,18 @@ function mapSizeUpgrade() {
         game.global.money -= game.global.mapSizeUpgradeCost;
         game.global.mapSizeUpgradeCost *= game.global.mapSizePriceScale;
         game.global.mapSizePriceScale += 1;
-        game.global.pricePerArtifact += 0.5;
+        game.global.pricePerArtifact = game.global.pricePerArtifact*1.5;
         document.getElementById("mapSizeUpgrade").style.display = "none";
         game.global.showMapSizeUpgrade = false;
         showMoney();
+        prompt = document.createElement("div")
+        prompt.className = "p-2 text-start rounded-1 show fade";
+        prompt.style.backgroundColor = game.global.promptBGColor;
+        prompt.style.color = "antiquewhite";
+        prompt.style.fontSize = "1.5rem";
+        game.global.promptBGColor = (game.global.promptBGColor == "indianred") ? "brown" : "indianred";
+        document.getElementById("infoBox").appendChild(prompt);
+        prompt.innerHTML = "You bought a map to a deeper cave, with more valuable artifacts!";
 
     }
 }
@@ -381,6 +412,34 @@ function drillUpgrade() {
 
     }
 }
+
+function checkPrompts() {
+    if (game.global.artifactsSold == 0 && game.global.artifacts == 20 && game.global.sellInstruction == false) {
+        prompt = document.createElement("div")
+        prompt.className = "p-2 text-start rounded-1 show fade";
+        prompt.style.backgroundColor = game.global.promptBGColor;
+        prompt.style.color = "antiquewhite";
+        prompt.style.fontSize = "1.5rem";
+        game.global.promptBGColor = (game.global.promptBGColor=="indianred")? "brown" : "indianred";
+        document.getElementById("infoBox").appendChild(prompt);
+        game.global.sellInstruction = true;
+        prompt.innerHTML = "You can sell your artifacts for cash by clicking the button next to \"sell your artifacts for cash\"";
+    }
+
+    if (game.global.ratUnlocked && game.global.ratDiscovery == false) {
+        document.getElementById("infoBox").className = "container p-1 rounded-3 overflow-auto p-3 mb-3 mb-md-0 me-md-3 fade show";
+        prompt = document.createElement("div")
+        prompt.className = "p-2 text-start rounded-1 show fade";
+        prompt.style.backgroundColor = game.global.promptBGColor;
+        prompt.style.color = "antiquewhite";
+        prompt.style.fontSize = "1.5rem";
+        game.global.promptBGColor = (game.global.promptBGColor == "indianred") ? "brown" : "indianred";
+        document.getElementById("infoBox").appendChild(prompt);
+        game.global.ratDiscovery = true;
+        prompt.innerHTML = "You discovered a rat!... For some reason you take it home with you";
+    }
+}
+
 
 
 load();
@@ -400,4 +459,6 @@ window.setInterval(function () {
 
     save();
     updateMoney();
+    checkPrompts();
+ 
 }, 1000);

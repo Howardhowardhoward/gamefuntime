@@ -4,10 +4,10 @@ function newGame() {
             //version Number:
             version: "0.0.3",
             // Global variables
-            mapWidth: 10,
-            mapHeight: 5,
-            newMapWidth: 10,
-            newMapHeight: 5,
+            mapWidth: 9,
+            mapHeight: 4,
+            newMapWidth: 9,
+            newMapHeight: 4,
 
             startY: 3,
             newStartY: 3,
@@ -19,7 +19,9 @@ function newGame() {
             playerPosition: -1,
             gotArtifact: false,
             artifacts: 0,
+            artifactsSold:0,
             artifactRate: 0,
+            mapsCompleted: 0,
 
             //Money variables
             money: 0,
@@ -29,7 +31,7 @@ function newGame() {
             pricePerArtifact: 1,
 
             // upgrade variables
-            mapSizeUpgradeCost: 50,
+            mapSizeUpgradeCost: 25,
             showBankUpgrade: false,
             showMapSizeUpgrade: false,
             mapSizePriceScale: 2,
@@ -38,6 +40,15 @@ function newGame() {
             drillLevel: 0,
             showDrillUpgrade: false,
             drillPriceScale: 2,
+
+            ratUnlocked:false,
+            ratLevel:0,
+            ratFoodCost: 25,
+
+            //prompt variables
+            promptBGColor: "brown",
+            ratDiscovery: false,
+            sellInstruction:false,
 
 
 
