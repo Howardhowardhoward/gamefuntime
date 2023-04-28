@@ -46,7 +46,7 @@ function newGame() {
             ratFoodCost: 25,
 
             //prompt variables
-            promptBGColor: "brown",
+            promptBGColor: "indianred",
             ratDiscovery: false,
             sellInstruction:false,
 
